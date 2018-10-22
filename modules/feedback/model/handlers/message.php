@@ -1,14 +1,19 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT']."/start.php";
 try {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $message = $_POST['message'];
+    if (!filter_var($email_a, FILTER_VALIDATE_EMAIL)){
+        echo "E-mail введен неверно.";
+        die();
+    }
+
     //leave message query
     $lmq = $db->prepare("INSERT INTO feedback(name, email, message) VALUES(:name, :email, :message)");
     $lmq->bindParam("name", $name);
     $lmq->bindParam("email", $email);
     $lmq->bindParam("message", $message);
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $message = $_POST['message'];
 
     $db->beginTransaction();
     $lmq->execute();
