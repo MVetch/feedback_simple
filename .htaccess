@@ -1,0 +1,5 @@
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^([A-Za-z0-9]+)/([A-Za-z0-9]+)$ modules/$1/$2.php [L]
+RewriteRule ^([A-Za-z0-9]+)/model/handlers/([A-Za-z0-9]+)$ modules/$1/model/handlers/$2.php [L]
