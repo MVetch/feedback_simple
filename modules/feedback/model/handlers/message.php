@@ -8,6 +8,14 @@ try {
         echo "E-mail введен неверно.";
         die();
     }
+    if(empty($name)){
+        echo "Имя не должно быть пустым.";
+        die();
+    }
+    if(empty($message)){
+        echo "Текст сообщения не должен быть пустым.";
+        die();
+    }
 
     //leave message query
     $lmq = $db->prepare("INSERT INTO feedback(name, email, message) VALUES(:name, :email, :message)");

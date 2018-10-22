@@ -48,7 +48,10 @@ class FileReader implements SeekableIterator
     public function __construct(string $filename)
     {
         $this->filename = FILE_DIR . $filename;
-        $this->handler = fopen($this->filename, "r");
+        $this->handler = @fopen($this->filename, "r");
+        if(!$this->handler) {
+            echo 'Файл не найден. Он должен находиться в папке /misc';
+        }
     }
 
     public function seek($line, $fromCurrent = false)
@@ -68,6 +71,9 @@ class FileReader implements SeekableIterator
 
     public function current()
     {
+        if(!$this->handler) {
+            return;
+        }
         return fgets($this->handler);
     }
 
@@ -78,12 +84,18 @@ class FileReader implements SeekableIterator
 
     public function next()
     {
+        if(!$this->handler) {
+            return;
+        }
         $this->seek($this->pointer + 1, true);
         return fgets($this->handler);
     }
 
     public function rewind()
     {
+        if(!$this->handler) {
+            return;
+        }
         fseek($this->handler, 0);
         $this->pointer = 0;
     }
@@ -95,11 +107,17 @@ class FileReader implements SeekableIterator
 
     public function fseek($bytes)
     {
+        if(!$this->handler) {
+            return;
+        }
         fseek($this->handler, $bytes);
     }
 
     public function fgets()
     {
+        if(!$this->handler) {
+            return;
+        }
         return fgets($this->handler);
     }
 
@@ -110,6 +128,9 @@ class FileReader implements SeekableIterator
      */
     public function getItem($index)
     {
+        if(!$this->handler) {
+            return;
+        }
         $this->seek($index);
         return fgets($this->handler);
     }
@@ -125,6 +146,9 @@ class FileReader implements SeekableIterator
      */
     public function countLineNumber()
     {
+        if(!$this->handler) {
+            return 0;
+        }
         $bytePointer = 0;
         while (!feof($this->handler)) {
             $this->pointer++;
